@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import mockData from './mockData';
+
+import Chart from './Chart';
+import SelectChart from './selectChart';
+
 
 function App() {
+  
+  const [charts, setCharts] = useState([]);
+ 
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SelectChart chart={charts} setCharts={setCharts}/>
+      <div style={{display: 'flex', flexWrap: 'wrap'}}>
+        {console.log(charts)}
+        {charts.map(({ type, id }, key) => <Chart key={key} data={mockData[type]} chartType={type} setCharts={setCharts} id={id}/> )}
+      </div>
     </div>
   );
 }
