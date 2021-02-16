@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import downArrow from './assets/svg/down-arrow.svg';
 import upArrow from './assets/svg/up-arrow.svg';
+import mockData from './mockData';
+import Generator from './helpers';
+
+const idGenerator = new Generator('1234567890');
 
 const charts = [
     'Line',
@@ -11,7 +15,7 @@ const charts = [
     'Polar'
 ]
 
-export default function SelectChart({ setCharts, chart }) {
+export default function SelectChart({ chartData, setChartData }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
@@ -20,8 +24,10 @@ export default function SelectChart({ setCharts, chart }) {
     }
 
     const selectHandler = (type, id) => {
-        console.log(id, chart)
-        setCharts((prc) => ([...prc, {type, id: id + prc.length}]));
+        setChartData((prc) => {
+            console.log(mockData[type])
+            return ([...prc, {type, id: idGenerator.specificGenerator(10), ...mockData[type]}])
+        })
       }
 
     const blurHandler = (event)  => {
@@ -34,23 +40,25 @@ export default function SelectChart({ setCharts, chart }) {
       }, [open]);
 
     return (
-        <div style={{width: 250, position: 'relative'}}>
-            <div style={{width: '100%'}}>
-                <div onClick={selectTrigger}style={{ cursor: 'pointer', padding: '10px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #949ca8', borderRadius: 5}}>
-                    <span>
-                        {chart[chart.length-1]?.type || 'Select Chart'}
-                    </span>
-                <div >
-                    <img style={{width: 10, height: 10,}} src={open ? upArrow : downArrow} alt='arrow bottom'/>
-                </div>
-                </div>
-                {open 
-                    && 
-                    <div style={{border: '1px solid #949ca8', borderRadius: 5, outline: 'none', position: 'absolute',right: '0px', width: '100%', maxHeight: '200px', overflow: 'auto'}} ref={ref} onBlur={blurHandler} tabIndex={1}>
-                        {charts.map((el, key) => <p key={key} onClick={() => selectHandler(el, key)} className='selectItem' style={{margin: '0px',padding: '5px 20px',  cursor: 'pointer'}}>{el}</p>)}
+        <div className='p-10'>
+            <div className='relative w-250'>
+                <div className='select-wrapper f-width'>
+                    <div onClick={selectTrigger} className='select-wrapper__input'>
+                        <span>
+                            {chartData[chartData.length-1]?.type || 'Select Chart'}
+                        </span>
+                        <div>
+                            <img src={open ? upArrow : downArrow} alt='arrow bottom'/>
+                        </div>
                     </div>
-                }
-           </div>
+                    {open 
+                        && 
+                        <div className='select-wrapper__list' ref={ref} onBlur={blurHandler} tabIndex={1}>
+                            {charts.map((el, key) => <p key={key} onClick={() => selectHandler(el, key)} className='select-wrapper__option'>{el}</p>)}
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     )
 }

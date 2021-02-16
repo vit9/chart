@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Line, Bar, Pie, Doughnut, Radar, Polar } from 'react-chartjs-2';
-import Generator from './helpers';
 import cancelSvg from './assets/svg/cancel.svg';
 import plusSvg from './assets/svg/plus.svg';
 import minusSvg from './assets/svg/remove.svg'
 
-const numberGenerator = new Generator('1234567890');
-const colorGenerator = new Generator('1234567890abcdef');
 
 const defaultData  =  {
     Line: {
@@ -90,106 +87,43 @@ const defaultData  =  {
   
   
 
-export default function Chart({ data, setCharts, chartType, id }) {
-
-  const [chartData, setChartData] = useState(data);
-  
-  const addNewChart = (type) => {
-    let dataArray, dataSets, bgColor, bgColorArray, labels;
+export default function Chart({ data, setCharts, chartType, id, addNewChart, deleteChart, removeChart }) {
+    
+    
+  const getChart = (type, data) => {
+      console.log(data)
     switch(type) {
         case 'Line': 
-                dataArray = new Array(10).fill().map(() => +numberGenerator.specificGenerator(2));
-                bgColor = colorGenerator.specificGenerator(6)
-                dataSets = {...defaultData[type], data: dataArray, borderColor: `#${bgColor}`, backgroundColor: `#${bgColor}`, label: defaultData[type].label + chartData.datasets.length};
-                setChartData((prev) => ({...prev, datasets: [...prev.datasets.map((el) => ({...el, data: [...el.data]})), dataSets]}));
-            return;
-            
+            return <Line height={75} width={150} data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
         case 'Bar': 
-            dataArray = new Array(10).fill().map(() => +numberGenerator.specificGenerator(2));
-            bgColor = colorGenerator.specificGenerator(6);
-            dataSets = {...defaultData[type], data: dataArray, borderColor: `#${bgColor}`,  backgroundColor: `#${bgColor}33`, label: defaultData[type].label + chartData.datasets.length};
-            setChartData((prev) => ({...prev, datasets: [...prev.datasets.map((el) => ({...el, data: [...el.data]})), dataSets]}));
-            return;
+            return <Bar data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
         case 'Pie': 
-            dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(3));
-            bgColorArray = dataArray.map(() => `#${colorGenerator.specificGenerator(6)}`);
-            labels = dataArray.map((_, i) => `Test data ${i+1}`)
-            dataSets = {...defaultData[type], data: dataArray, hoverBackgroundColor: bgColorArray,  backgroundColor: bgColorArray};
-            setChartData((prev) => ({...prev, labels: labels, datasets: [dataSets]}));
-        return;
-        case 'Doughnut': 
-            dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(3));
-            bgColorArray = dataArray.map(() => `#${colorGenerator.specificGenerator(6)}`);
-            labels = dataArray.map((_, i) => `Test data ${i+1}`)
-            dataSets = {...defaultData[type], data: dataArray, hoverBackgroundColor: bgColorArray,  backgroundColor: bgColorArray};
-            setChartData((prev) => ({...prev, labels: labels, datasets: [dataSets]}));
-        return;
-        case 'Radar': 
-            dataArray = new Array(10).fill().map(() => +numberGenerator.specificGenerator(2));
-            bgColor = colorGenerator.specificGenerator(6);
-            dataSets = {...defaultData[type], data: dataArray, borderColor: `#${bgColor}`,  backgroundColor: `#${bgColor}`, label: 'Test Data' + chartData.datasets.length};
-            console.log(defaultData[type].label, chartData.datasets)
-            setChartData((prev) => ({...prev, datasets: [...prev.datasets.map((el) => ({...el, data: [...el.data]})), dataSets]}));
-        return;
-        case 'Polar': 
-            dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(3));
-            bgColorArray = dataArray.map(() => `#${colorGenerator.specificGenerator(6)}`);
-            labels = dataArray.map((_, i) => `Test data ${i+1}`)
-            dataSets = {...defaultData[type], data: dataArray, backgroundColor: bgColorArray};
-            setChartData((prev) => ({...prev, labels: labels, datasets: [dataSets]}));
-        return;
+            return <Pie data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}} />
+        case 'Doughnut':
+            return <Doughnut data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+        case 'Radar':
+            return <Radar data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+        case 'Polar':
+            return <Polar data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
         default:
     }
-  
-  }
-
-  const deleteChart = (type) => {
-    if(type === 'Pie' || type === 'Doughnut') return;
-    setChartData((prev) => ({...prev, datasets: prev.datasets.filter((el, i) => prev.datasets.length - 1 !== i)}))
-  }
-
-    const getChart = (type) => {
-        switch(type) {
-            case 'Line': 
-                return <Line data={chartData}/>
-            case 'Bar': 
-                return <Bar data={chartData}/>
-            case 'Pie': 
-                return <Pie data={chartData}/>
-            case 'Doughnut':
-                return <Doughnut data={chartData}/>
-            case 'Radar':
-                return <Radar data={chartData}/>
-            case 'Polar':
-                return <Polar data={chartData}/>
-            default:
-        }
-    }
-
-    const removeChart = (id) => {
-        setCharts((prc) => {
-            console.log(prc, id)
-            return (
-                prc.filter((ch) => ch.id !== id)
-            )
-        })
-    }
+}
     
     return (
-        <div style={{width: '33%', minWidth: '300px', maxWidth: '500px', padding: 30, borderRadius: 10, backgroundColor: '#354255', margin: 25, position: 'relative'}}>
-            <div style={{width: 10, height: 10, position: 'absolute', top: 0, right: 10, cursor: 'pointer'}} >
+        <div className='widget-container'>
+            <div className='widget-container__close' onClick={() => removeChart(id)}>
                 <img src={cancelSvg} alt='close'/>
             </div>
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <div onClick={() => addNewChart(chartType)} style={{cursor: 'pointer', width: 20, height:20, borderRadius: 5, backgroundColor: '#949ca8', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <div className='widget-container__buttons'>
+                <div onClick={() => addNewChart(chartType, id)}>
                     <img style={{width: 10, height: 10}} src={plusSvg} alt='add'/>
                 </div>
-                <div onClick={() => deleteChart(chartType)} style={{cursor: 'pointer', marginLeft: 10, width: 20, height:20, borderRadius: 5, backgroundColor: defaultData[chartType].bg,  display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <div onClick={() => deleteChart(chartType, id)} style={{backgroundColor: defaultData[chartType].bg}}>
                     <img style={{width: 10, height: 10}} src={minusSvg} alt='remove'/>
                 </div>
             </div>
             <div>
-                {getChart(chartType)}
+                {getChart(chartType, data)}
             </div>
         </div>
     )
