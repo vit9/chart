@@ -32,7 +32,7 @@ const defaultData  =  {
 	    datasets: [
             {
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
             }
 	    ],
         bg: '#ababab'
@@ -42,7 +42,7 @@ const defaultData  =  {
 	    datasets: [
             {
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
             }
 	    ],
         bg: '#ababab'
@@ -94,17 +94,17 @@ export default function Chart({ data, setCharts, chartType, id, addNewChart, del
       console.log(data)
     switch(type) {
         case 'Line': 
-            return <Line height={75} width={150} data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+            return <Line height={75} width={150} data={{...data, datasets: data.datasets.map((el, i) => ({...el,borderWidth: 0, label: 'Test data ' + i}))}}/>
         case 'Bar': 
-            return <Bar data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+            return <Bar data={{...data, datasets: data.datasets.map((el, i) => ({...el, borderWidth: 0, label: 'Test data ' + i}))}}/>
         case 'Pie': 
-            return <Pie data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}} />
+            return <Pie data={{...data, datasets: data.datasets.map((el, i) => ({...el, borderWidth: 0, label: 'Test data ' + i}))}} />
         case 'Doughnut':
-            return <Doughnut data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+            return <Doughnut data={{...data, datasets: data.datasets.map((el, i) => ({...el, borderWidth: 0, label: 'Test data ' + i}))}}/>
         case 'Radar':
-            return <Radar data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+            return <Radar data={{...data, datasets: data.datasets.map((el, i) => ({...el,borderWidth: 0, label: 'Test data ' + i}))}}/>
         case 'Polar':
-            return <Polar data={{...data, datasets: data.datasets.map((el, i) => ({...el, label: 'Test data ' + i}))}}/>
+            return <Polar data={{...data, datasets: data.datasets.map((el, i) => ({...el, borderWidth: 0, label: 'Test data ' + i}))}}/>
         default:
     }
 }
