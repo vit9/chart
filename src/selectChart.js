@@ -25,7 +25,6 @@ export default function SelectChart({ chartData, setChartData }) {
 
     const selectHandler = (type, id) => {
         setChartData((prc) => {
-            console.log(mockData[type])
             return ([...prc, {type, id: idGenerator.specificGenerator(10), ...mockData[type]}])
         })
       }

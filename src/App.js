@@ -18,6 +18,8 @@ function App() {
     let dataArray, dataSets, bgColor, bgColorArray, labels, d;
     switch(type) {
         case 'Line': 
+
+              if(chartData.find((el) => el.id === id).datasets.length > 2) return; 
                 dataArray = new Array(10).fill().map(() => +numberGenerator.specificGenerator(2));
                 bgColor = colorGenerator.specificGenerator(6)
                 dataSets = {...mockData[type].datasets[0], data: dataArray, borderColor: `#${bgColor}`,  backgroundColor: `#${bgColor}`};
@@ -26,14 +28,15 @@ function App() {
             return;
             
         case 'Bar': 
+        if(chartData.find((el) => el.id === id).datasets.length > 2) return; 
             dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(2));
             bgColor = colorGenerator.specificGenerator(6);
-            dataSets = {...mockData[type].datasets[0], data: dataArray, borderColor: `#${bgColor}`,  backgroundColor: `#${bgColor}33`};
+            dataSets = {...mockData[type].datasets[0], data: dataArray, borderColor: `#${bgColor}`,  backgroundColor: `#${bgColor}`};
             d = chartData.map((ch) => ch.id === id ? ({...ch, datasets: [...ch.datasets.map((el) => ({...el, data: [...el.data]})), dataSets]}) : ch)
             setChartData(d);
             return;
-        case 'Pie': 
-            dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(3));
+        case 'Pie':
+            dataArray = new Array(3).fill().map(() => +numberGenerator.specificGenerator(3));
             bgColorArray = dataArray.map(() => `#${colorGenerator.specificGenerator(6)}`);
             labels = dataArray.map((_, i) => `Test data ${i+1}`)
             dataSets = {...mockData[type].datasets[0], data: dataArray, hoverBackgroundColor: bgColorArray,  backgroundColor: bgColorArray};
@@ -42,22 +45,23 @@ function App() {
 
         return;
         case 'Doughnut': 
-            dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(3));
+            dataArray = new Array(3).fill().map(() => +numberGenerator.specificGenerator(3));
             bgColorArray = dataArray.map(() => `#${colorGenerator.specificGenerator(6)}`);
             labels = dataArray.map((_, i) => `Test data ${i+1}`)
             dataSets = {...mockData[type].datasets[0], data: dataArray, hoverBackgroundColor: bgColorArray,  backgroundColor: bgColorArray, labels};
             d = chartData.map((ch) => ch.id === id ? ({...ch, datasets: [dataSets], labels}) : {...ch, labels});
             setChartData(d);
         return;
-        case 'Radar': 
-            dataArray = new Array(10).fill().map(() => +numberGenerator.specificGenerator(2));
+        case 'Radar':
+          if(chartData.find((el) => el.id === id).datasets.length > 2) return; 
+            dataArray = new Array(3).fill().map(() => +numberGenerator.specificGenerator(2));
             bgColor = colorGenerator.specificGenerator(6);
             dataSets = {...mockData[type].datasets[0], data: dataArray, borderColor: `#${bgColor}`,  backgroundColor: `#${bgColor}`};
             d = chartData.map((ch) => ch.id === id ? ({...ch, datasets: [...ch.datasets.map((el) => ({...el, data: [...el.data]})), dataSets]}) : ch)
             setChartData(d);
         return;
         case 'Polar': 
-            dataArray = new Array(7).fill().map(() => +numberGenerator.specificGenerator(3));
+            dataArray = new Array(3).fill().map(() => +numberGenerator.specificGenerator(3));
             bgColorArray = dataArray.map(() => `#${colorGenerator.specificGenerator(6)}`);
             labels = dataArray.map((_, i) => `Test data ${i+1}`)
             dataSets = {...mockData[type].datasets[0], data: dataArray, backgroundColor: bgColorArray, labels};
