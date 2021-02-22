@@ -13,6 +13,7 @@ const colorGenerator = new Generator('1234567890abcdef');
 function App() {
 
   const [chartData, setChartData] = useState([{
+    id: 1,
     type: 'Bar',
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -28,7 +29,8 @@ function App() {
     ]
   },
   {
-    type: 'Pie',
+    id: 2,
+    type: 'Doughnut',
     labels: ['Red', 'Green', 'Yellow'],
     datasets: [
       {
